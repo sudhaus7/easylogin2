@@ -1,0 +1,11 @@
+ins handbuch kommt:
+
+beispiel wie man eigenes template verwendet
+konfiguration von realurl
+konfiguration von cooluri
+info, dass xdrs nicht mehr verwendet wird
+constants
+beispiel zur einbindung per TS
+installation; links zu den stellen an denen man sich die keys holt
+hook
+hinweis, dass man bei google die API auch aktivieren muss

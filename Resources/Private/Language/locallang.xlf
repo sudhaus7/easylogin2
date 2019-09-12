@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-12-28T17:16:23Z" product-name="easylogin2">
+		<header/>
+		<body>
+			<trans-unit id="tx_easylogin2_domain_model_identifiers">
+				<source>Identifiers</source>
+			</trans-unit>
+			<trans-unit id="tx_easylogin2_domain_model_identifiers.connectionname">
+				<source>Connectionname</source>
+			</trans-unit>
+			<trans-unit id="tx_easylogin2_domain_model_identifiers.connectiontype">
+				<source>Connectiontype</source>
+			</trans-unit>
+			<trans-unit id="tx_easylogin2_domain_model_identifiers.identifier">
+				<source>Identifier</source>
+			</trans-unit>
+			<trans-unit id="tx_easylogin2_domain_model_identifiers.user">
+				<source>User</source>
+			</trans-unit>
+			<trans-unit id="tx_easylogin2_domain_model_user">
+				<source>User</source>
+			</trans-unit>
+			<trans-unit id="login">
+				<source>User for Login found</source>
+			</trans-unit>
+			<trans-unit id="email_exists">
+				<source>Your email address is already registered with another login method, please use this method to login again.</source>
+			</trans-unit>
+			<trans-unit id="error_reqToken">
+				<source>Error while getting OAuth Request Token (%s)</source>
+			</trans-unit>
+			<trans-unit id="invalid_url">
+				<source>Error: OpenID URL is not in proper format (%s)</source>
+			</trans-unit>
+			<trans-unit id="error_endpoint">
+				<source>Error while getting OpenID endpoint (%s): %s</source>
+			</trans-unit>
+			<trans-unit id="nouser">
+				<source>User not found. Please contact the admin of the website to request access to this site. Tell the admin this identifier: %s</source>
+			</trans-unit>
+			<trans-unit id="error_validate">
+				<source>Error while validating OpenID (%s): %s</source>
+			</trans-unit>
+			<trans-unit id="error_oauth2_validate">
+				<source>>Error while validating OpenID (%s)</source>
+			</trans-unit>
+			<trans-unit id="error_validate_nocode">
+				<source>Error while validating code-parameter %s</source>
+			</trans-unit>
+			<trans-unit id="error_validate_openid_nocode">
+				<source>Error while validating OpenID %s</source>
+			</trans-unit>
+			<trans-unit id="error_token">
+				<source>Error: could not retrieve access_token</source>
+			</trans-unit>
+			<trans-unit id="qmark_in_url">
+				<source>You got a configuration error: The verification URL %s contains a question mark. Facebook can't handle this. Use realurl or cooluri to get rid of that nagging character (default configuration for realurl included in ext_localconf.php within the easylogin2 extension), or remove some variables from the TypoScript option "preserveGETvars".</source>
+			</trans-unit>
+			<trans-unit id="error_validate_token">
+				<source>Error while validating token-parameter (%s: %s)</source>
+			</trans-unit>
+			<trans-unit id="error_getting_accesstoken">
+				<source>Error: Could not get access token (%s)</source>
+			</trans-unit>
+			<trans-unit id="error_getting_userinfo">
+				<source>Error: While retrieving user details, the user id was empty</source>
+			</trans-unit>
+			<trans-unit id="connect_success">
+				<source>Account successfully connected!</source>
+			</trans-unit>
+			<trans-unit id="user_created">
+				<source>A user was successfully created</source>
+			</trans-unit>
+			<trans-unit id="already_connected">
+				<source>Already connected</source>
+			</trans-unit>
+			<trans-unit id="update_connection">
+				<source>Update connection with</source>
+			</trans-unit>
+			<trans-unit id="connect_with">
+				<source>Connect with</source>
+			</trans-unit>
+			<trans-unit id="login_with">
+				<source>Login with</source>
+			</trans-unit>
+			<trans-unit id="username">
+				<source>Username</source>
+			</trans-unit>
+			 
+			<trans-unit id="email_subject">
+				<source>New linked account</source>
+			</trans-unit>
+			<trans-unit id="email_body">
+				<source>A used created a linked account.
+			
+Username: %s
+email:   %s</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

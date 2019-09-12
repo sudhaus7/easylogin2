@@ -1,0 +1,39 @@
+{namespace h=DIX\Easylogin2\ViewHelper}
+
+	<f:for each="{values.provider}" as="provider" key="type">
+		<f:if condition="{provider.showMe}" >
+			<div id="tabs-{type}">
+			 		<f:form action="providerselected" objectName="thedata">
+							<f:form.hidden property="loginType" value="{type}" />
+							<f:if condition="{provider.withUsername}">
+								<f:translate key="username" />: <f:form.textfield property="userName" />
+							</f:if>
+							<f:if condition="{values.user}">
+								<f:then>
+									<f:if condition="{h:disp(obj: values.associated, prop: type)}">
+										<f:then>
+											<p><f:translate key="already_connected" /></p>
+											<f:form.submit value="{f:translate(key:'update_connection')} {provider.name}" class="login-button login-button-{type}" />
+										</f:then>
+										<f:else>
+											<f:form.submit value="{f:translate(key:'connect_with')} {provider.name}" class="login-button login-button-{type}" />
+										</f:else>
+									</f:if>
+								</f:then>
+								<f:else>
+									<f:form.submit value="{f:translate(key:'login_with')} {provider.name}" class="login-button login-button-{type}" />
+								</f:else>
+							</f:if>
+						</f:form>
+			</div>
+		</f:if>
+	</f:for>
+</div>
+
+
+<script type="text/javascript">
+jQuery(function($) {
+	$( "#tabs" ).tabs();
+});
+</script>
+<!-- your verifyUrl is {values.verifyUrl} -->

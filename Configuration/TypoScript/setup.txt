@@ -1,0 +1,237 @@
+plugin.tx_easylogin2_easylogin {
+	view {
+		templateRootPaths.0 = {$plugin.tx_easylogin2_easylogin.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_easylogin2_easylogin.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_easylogin2_easylogin.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_easylogin2_easylogin.persistence.storagePid}
+	}
+	features.skipDefaultArguments = 1
+}
+
+plugin.tx_easylogin2_easylogin.settings {
+	# take a look at the constants for more remarks
+	allowCreate = {$plugin.tx_easylogin2_easylogin.settings.allowCreate}
+	allowUpdate = {$plugin.tx_easylogin2_easylogin.settings.allowUpdate}
+	user_pid = {$plugin.tx_easylogin2_easylogin.persistence.storagePid}
+	usergroup = {$plugin.tx_easylogin2_easylogin.settings.usergroup}
+	trustedDomains = {$plugin.tx_easylogin2_easylogin.settings.trustedDomains}
+	mailAdminOnCreate = {$plugin.tx_easylogin2_easylogin.settings.mailAdminOnCreate}
+	mailAdminFrom = {$plugin.tx_easylogin2_easylogin.settings.mailAdminFrom}
+	mailAdminTo = {$plugin.tx_easylogin2_easylogin.settings.mailAdminTo}
+	pid_verify = {$plugin.tx_easylogin2_easylogin.settings.pid_verify}
+	preserveGETvars = {$plugin.tx_easylogin2_easylogin.settings.preserveGETvars}
+
+	# possible values: nickname,email,fullname,postcode,country,prefix,firstname,lastname,suffix
+	# possible by OpenID, but not used in fe_users: dob (date of birth), gender, language, timezone
+	optionalInfo = nickname,email,fullname,postcode,country,prefix,firstname,lastname,suffix
+	requiredInfo = nickname,email,fullname,postcode,country,prefix,firstname,lastname,suffix
+	
+	provider {
+		5 = CONTENTELEMENT
+		5.name = User/Pass
+		5.showWhenLoggedIn = 1
+		5.object = RECORDS
+		5.object.tables = tt_content
+		5.object.source = {$plugin.tx_easylogin2_easylogin.settings.uid_felogin}
+
+		150 = OAUTH2
+		150.name = facebook
+		150.icon = EXT:easylogin2/Resources/Public/Icons/facebook.jpg
+		150.scope = email
+		150.authorizeUrl = https://www.facebook.com/v2.4/dialog/oauth
+		150.accessTokenUrl = https://graph.facebook.com/v2.4/oauth/access_token
+		150.requestProfileUrl = https://graph.facebook.com/v2.4/me?fields=id,name,email,first_name,last_name
+		# Alternative for using old API (v2.3)
+#		150.authorizeUrl = https://www.facebook.com/v2.3/dialog/oauth
+#		150.accessTokenUrl = https://graph.facebook.com/v2.3/oauth/access_token
+#		150.requestProfileUrl = https://graph.facebook.com/v2.3/me
+
+		150.profileEncoding = JSON
+		150.profileMap {
+			# format:
+			# key = response parameter
+			# possible keys: see https://developers.facebook.com/docs/graph-api/reference/v2.0/user
+			firstname = first_name
+			lastname = last_name
+			nickname = name
+			fullname = name
+			email = email
+			id = id
+		}
+		150.consumerKey = {$plugin.tx_easylogin2_easylogin.settings.facebook_appID}
+		150.consumerSecret = {$plugin.tx_easylogin2_easylogin.settings.facebook_appSecret}
+		150.showWhenLoggedIn = {$plugin.tx_easylogin2_easylogin.settings.allowUpdate}
+
+		90 = OAUTH2
+		90.name = Google
+		90.icon = EXT:easylogin2/Resources/Public/Icons/google.gif
+		90.scope = openid email profile
+		90.authorizeUrl = https://accounts.google.com/o/oauth2/auth
+		90.accessTokenUrl = https://accounts.google.com/o/oauth2/token
+		# google saves profile information within the response with the accesstoken - ID_TOKEN is a keyword to use this algorithm
+		# alte version: 90.requestProfileUrl = https://www.googleapis.com/plus/v1/people/me
+		90.requestProfileUrl = https://www.googleapis.com/plus/v1/people/me/openIdConnect
+		90.profileEncoding = JSON
+		90.profileMap {
+			# format:
+			# key = response parameter
+			# possible keys: see https://developers.google.com/+/api/latest/people/getOpenIdConnect
+			email = email
+			id = sub
+			fullname = name
+			firstname = given_name
+			lastname = family_name
+		}
+		90.consumerKey = {$plugin.tx_easylogin2_easylogin.settings.google_clientID}
+		90.consumerSecret = {$plugin.tx_easylogin2_easylogin.settings.google_clientSecret}
+		90.showWhenLoggedIn = {$plugin.tx_easylogin2_easylogin.settings.allowUpdate}
+
+		# OAuth Version 1.1 as used by Twitter
+		60 = OAUTH1
+		60.name = Twitter
+		60.icon = EXT:easylogin2/Resources/Public/Icons/twitter.gif
+		# sigMethod is one of these: HMAC_SHA1   PLAINTEXT   RSA_SHA1
+		60.sigMethod = HMAC_SHA1
+		60.consumerKey = {$plugin.tx_easylogin2_easylogin.settings.twitter_consumerKey}
+		60.consumerSecret = {$plugin.tx_easylogin2_easylogin.settings.twitter_consumerSecret}
+		60.requestTokenUrl = https://api.twitter.com/oauth/request_token
+		60.authorizeUrl = https://api.twitter.com/oauth/authorize
+		60.accessTokenUrl = https://api.twitter.com/oauth/access_token
+		# you can use markers in the requestProfileUrl, the corresponding values from the accessToken-response will be substituted
+		60.requestProfileUrl = https://api.twitter.com/1.1/users/lookup.json?user_id=###user_id###
+		60.profileMap {
+			# format:
+			# key = response parameter
+			# possible keys: fullname, firstname, lastname, suffix, prefix, postcode, country, nickname, email
+			nickname = screen_name
+			fullname = name
+			id = id
+		}
+		60.showWhenLoggedIn = {$plugin.tx_easylogin2_easylogin.settings.allowUpdate}
+
+		70 = OAUTH1
+		70.name = Xing
+		70.icon = EXT:easylogin2/Resources/Public/Icons/xing.png
+		# sigMethod is one of these: HMAC_SHA1   PLAINTEXT
+		70.sigMethod = HMAC_SHA1
+		70.consumerKey = {$plugin.tx_easylogin2_easylogin.settings.xing_consumerKey}
+		70.consumerSecret = {$plugin.tx_easylogin2_easylogin.settings.xing_consumerSecret}
+		70.requestTokenUrl = https://api.xing.com/v1/request_token
+		70.authorizeUrl = https://api.xing.com/v1/authorize
+		70.accessTokenUrl = https://api.xing.com/v1/access_token
+		# you can use markers in the requestProfileUrl, the corresponding values from the accessToken-response will be substituted
+		70.requestProfileUrl = https://api.xing.com/v1/users/me
+		70.profileMap {
+			# format:
+			# key = response parameter
+			# possible keys: see https://dev.xing.com/docs/get/users/me
+			nickname = display_name
+			fullname = display_name
+			email = active_email
+			id = id
+		}
+		70.showWhenLoggedIn = {$plugin.tx_easylogin2_easylogin.settings.allowUpdate}
+
+		80 = OAUTH2
+		80.name = LinkedIn
+		80.icon = EXT:easylogin2/Resources/Public/Icons/linkedin.png
+		# what to request (see https://developer.linkedin.com/documents/authentication)
+		80.scope = r_basicprofile r_emailaddress
+		80.consumerKey = {$plugin.tx_easylogin2_easylogin.settings.linkedin_consumerKey}
+		80.consumerSecret = {$plugin.tx_easylogin2_easylogin.settings.linkedin_consumerSecret}
+		80.authorizeUrl = https://www.linkedin.com/uas/oauth2/authorization
+		80.accessTokenUrl = https://www.linkedin.com/uas/oauth2/accessToken
+		80.requestProfileUrl = https://api.linkedin.com/v1/people/~:(id,first-name,last-name,email-address)
+		80.profileEncoding = XML
+		80.profileMap {
+			# format:
+			# key = response parameter
+			# possible keys: see https://developer.linkedin.com/documents/profile-fields
+			firstname = first-name
+			lastname = last-name
+			email = email-address
+			id = id
+		}
+		80.showWhenLoggedIn = {$plugin.tx_easylogin2_easylogin.settings.allowUpdate}
+
+		20 = OPENID
+		20.name = Yahoo
+		20.url = https://me.yahoo.com/
+		20.icon = EXT:easylogin2/Resources/Public/Icons/yahoo.ico
+		20.showWhenLoggedIn = {$plugin.tx_easylogin2_easylogin.settings.allowUpdate}
+		20.optionalInfo < plugin.tx_easylogin2_easylogin.settings.optionalInfo
+		20.requiredInfo < plugin.tx_easylogin2_easylogin.settings.requiredInfo
+
+		30 = OPENID
+		30.name = myOpenID
+		30.url = http://###NAME###.myopenid.com/
+		30.icon = EXT:easylogin2/Resources/Public/Icons/myopenid.ico
+		30.showWhenLoggedIn = {$plugin.tx_easylogin2_easylogin.settings.allowUpdate}
+		30.optionalInfo < plugin.tx_easylogin2_easylogin.settings.optionalInfo
+		30.requiredInfo < plugin.tx_easylogin2_easylogin.settings.requiredInfo
+
+		40 = OPENID
+		40.name = Wordpress
+		40.url = http://###NAME###.wordpress.com/
+		40.icon = EXT:easylogin2/Resources/Public/Icons/wordpress.ico
+		40.showWhenLoggedIn = {$plugin.tx_easylogin2_easylogin.settings.allowUpdate}
+		40.optionalInfo < plugin.tx_easylogin2_easylogin.settings.optionalInfo
+		40.requiredInfo < plugin.tx_easylogin2_easylogin.settings.requiredInfo
+
+	}	
+}
+
+[globalVar = LIT:1 = {$plugin.tx_easylogin2_easylogin.settings.include_jQuery}]
+	page.includeJSlibs.jQuery = https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js
+	page.includeJSlibs.jQuery.external = 1
+	
+	page.includeJSlibs.jQueryUI = http://code.jquery.com/ui/1.9.2/jquery-ui.js
+	page.includeJSlibs.jQueryUI.external = 1
+
+	page.includeCSS.jQueryUI = http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css
+	page.includeCSS.jQueryUI.external = 1
+[global]
+[globalVar = LIT:1 = {$plugin.tx_easylogin2_easylogin.settings.disable.felogin}]
+	plugin.tx_easylogin2_easylogin.settings.provider.5 >
+[global]
+[globalVar = LIT:1 = {$plugin.tx_easylogin2_easylogin.settings.disable.yahoo}]
+	plugin.tx_easylogin2_easylogin.settings.provider.20 >
+[global]
+[globalVar = LIT:1 = {$plugin.tx_easylogin2_easylogin.settings.disable.myopenid}]
+	plugin.tx_easylogin2_easylogin.settings.provider.30 >
+[global]
+[globalVar = LIT:1 = {$plugin.tx_easylogin2_easylogin.settings.disable.wordpress}]
+	plugin.tx_easylogin2_easylogin.settings.provider.40 >
+[global]
+[globalVar = LIT:1 = {$plugin.tx_easylogin2_easylogin.settings.disable.twitter}]
+	plugin.tx_easylogin2_easylogin.settings.provider.60 >
+[global]
+[globalVar = LIT:1 = {$plugin.tx_easylogin2_easylogin.settings.disable.xing}]
+	plugin.tx_easylogin2_easylogin.settings.provider.70 >
+[global]
+[globalVar = LIT:1 = {$plugin.tx_easylogin2_easylogin.settings.disable.linkedin}]
+	plugin.tx_easylogin2_easylogin.settings.provider.80 >
+[global]
+[globalVar = LIT:1 = {$plugin.tx_easylogin2_easylogin.settings.disable.facebook}]
+	plugin.tx_easylogin2_easylogin.settings.provider.150 >
+[global]
+[globalVar = LIT:1 = {$plugin.tx_easylogin2_easylogin.settings.disable.google}]
+	plugin.tx_easylogin2_easylogin.settings.provider.90 >
+[global]
+
+lib.easylogin = USER_INT
+lib.easylogin {
+	userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+	pluginName = Easylogin
+	extensionName = Easylogin2
+	vendorName = DIX
+	
+	controller = Dixeasylogin
+	action = index
+	
+	settings =< plugin.tx_easylogin2_easylogin.settings
+	persistence =< plugin.tx_easylogin2_easylogin.persistence
+	view =< plugin.tx_easylogin2_easylogin.view
+}

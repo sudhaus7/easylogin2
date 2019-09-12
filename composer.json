@@ -1,0 +1,13 @@
+{
+  "name": "ejsa/easylogin2",
+  "autoload": {
+    "psr-4": {
+      "DIX\\Easylogin2\\": "Classes/"
+    }
+  },
+  "extra": {
+     "typo3/cms": {
+        "extension-key": "easylogin2"
+     }
+  }
+}

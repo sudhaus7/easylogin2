@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-12-28T17:16:23Z" product-name="easylogin2">
+		<header/>
+		<body>
+			<trans-unit id="connectionname.description">
+				<source>connectionname</source>
+			</trans-unit>
+			<trans-unit id="connectiontype.description">
+				<source>connectiontype</source>
+			</trans-unit>
+			<trans-unit id="identifier.description">
+				<source>identifier</source>
+			</trans-unit>
+			<trans-unit id="user.description">
+				<source>user</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
