@@ -83,7 +83,7 @@ class DixeasyloginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
 			$success = $authObj->verifyLogin();
 		}
 		if ($success === false) {
-			// $this->addFlashMessage('Error', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+			$this->addFlashMessage('Error', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
 		} elseif (is_string($success)) {
 			$this->addFlashMessage($success, '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
 		}
@@ -173,6 +173,12 @@ class DixeasyloginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
 	}
 	
 	public function getVerifyUrl($save=false) { // save the preservedVars, so that a later redirect will contain them (but not the verify url, since some authentication providers except only some urls)
+	    
+	    //$ar = explode('?',$_SERVER['REQUEST_URI']);
+	    
+	    //return (isset($_SERVER['HTTPS'])&&!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$ar[0];
+	    
+	    
 		if ($save) {
 			$this->setKey('easylogin_preservedVars', $this->getPreservedVars());
 		}
@@ -245,7 +251,7 @@ class DixeasyloginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
 			if ($this->settings['allowUpdate']) {
 				$this->linkIdentifier2User($identifier, (int)$fe_user['uid']);
 				$this->setKey("easylogin_loginType","");
-				$this->addFlashMessage(Div::getLL('connect_success'));
+				//$this->addFlashMessage(Div::getLL('connect_success'));
 				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->getSelfUrl());
 				return true;
 			}
@@ -368,11 +374,13 @@ class DixeasyloginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
 	}
 	
 	public function getKey($key) {
-		return $GLOBALS["TSFE"]->fe_user->getKey("ses", $key);
+	    return isset($_SESSION['easylogin2_'.$key]) ? $_SESSION['easylogin2_'.$key] : $GLOBALS["TSFE"]->fe_user->getKey("ses", $key);
+	
 	}
 	public function setKey($key, $value) {
 		$GLOBALS["TSFE"]->fe_user->setKey("ses", $key, $value);
 		$GLOBALS["TSFE"]->fe_user->storeSessionData();
+        $_SESSION['easylogin2_'.$key]=$value;
 	}
 
 }

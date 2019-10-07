@@ -67,7 +67,7 @@ plugin.tx_easylogin2_easylogin.settings {
 	google_clientSecret = YOUR-CONSUMER-SECRET
 
 		# when you want to keep some url parameters after logging in (e.g. when you are on a newsdetail page). use keyword "all" to keep all parameters
-	preserveGETvars = tx_ttnews
+	preserveGETvars = tx_news_pi1
 
 	
 		# enable or disable login methods

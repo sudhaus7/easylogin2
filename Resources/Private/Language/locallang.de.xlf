@@ -68,36 +68,28 @@
 			</trans-unit>
 			<trans-unit id="connect_success">
 				<source>Account successfully connected!</source>
-				<target>Ihr Konto wurde erfolgreich verknüpft</target>
 			</trans-unit>
 			<trans-unit id="user_created">
 				<source>A user was successfully created</source>
-				<target>Ihr Benutzer wurde angelegt</target>
 			</trans-unit>
 			<trans-unit id="already_connected">
 				<source>Already connected</source>
-				<target>Sie sind verbunden</target>
 			</trans-unit>
 			<trans-unit id="update_connection">
 				<source>Update connection with</source>
-				<targe>Anmelden mit</targe>
 			</trans-unit>
 			<trans-unit id="connect_with">
 				<source>Connect with</source>
-				<target>Anmelden mit</target>
 			</trans-unit>
 			<trans-unit id="login_with">
 				<source>Login with</source>
-				<target>Anmelden mit</target>
 			</trans-unit>
 			<trans-unit id="username">
 				<source>Username</source>
-				<target>Benutzername</target>
 			</trans-unit>
-
+			 
 			<trans-unit id="email_subject">
 				<source>New linked account</source>
-				<target>Neu verknüpftes Konto</target>
 			</trans-unit>
 			<trans-unit id="email_body">
 				<source>A used created a linked account.

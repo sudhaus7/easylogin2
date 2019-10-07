@@ -1,39 +1,51 @@
-{namespace h=DIX\Easylogin2\ViewHelper}
+<html xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+	  f:schemaLocation="https://fluidtypo3.org/schemas/vhs-master.xsd"
+	  xmlns:h="http://typo3.org/ns/DIX/Easylogin2/ViewHelper"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  lang="en"
+	  data-namespace-typo3-fluid="true">
 
+
+<div id="mytekom-login">
 	<f:for each="{values.provider}" as="provider" key="type">
 		<f:if condition="{provider.showMe}" >
-			<div id="tabs-{type}">
-			 		<f:form action="providerselected" objectName="thedata">
-							<f:form.hidden property="loginType" value="{type}" />
-							<f:if condition="{provider.withUsername}">
-								<f:translate key="username" />: <f:form.textfield property="userName" />
-							</f:if>
-							<f:if condition="{values.user}">
-								<f:then>
-									<f:if condition="{h:disp(obj: values.associated, prop: type)}">
-										<f:then>
-											<p><f:translate key="already_connected" /></p>
-											<f:form.submit value="{f:translate(key:'update_connection')} {provider.name}" class="login-button login-button-{type}" />
-										</f:then>
-										<f:else>
-											<f:form.submit value="{f:translate(key:'connect_with')} {provider.name}" class="login-button login-button-{type}" />
-										</f:else>
-									</f:if>
-								</f:then>
-								<f:else>
-									<f:form.submit value="{f:translate(key:'login_with')} {provider.name}" class="login-button login-button-{type}" />
-								</f:else>
-							</f:if>
-						</f:form>
-			</div>
+			<f:form action="providerselected" objectName="thedata" addQueryString="1">
+				<f:form.hidden property="loginType" value="{type}" />
+				<f:if condition="{provider.withUsername}">
+					'my tekom' Benutzername: <f:form.textfield property="userName" />
+				</f:if>
+				<f:if condition="{values.user}">
+					<f:then>
+						<f:if condition="{h:disp(obj: values.associated, prop: type)}">
+							<f:then>
+								<p>Sie sind bereits angemeldet und mit Ihrem tekom.de Mitgliedskonto verknüpft.</p>
+								<f:form.submit value="Konto auf 'meine tekom' aktualisieren" class="btn btn-successlogin-button login-button-{type}" />
+							</f:then>
+							<f:else>
+								<f:form.submit value="Mit Ihrem Mitgliedskonto auf 'meine tekom' anmelden" class="btn btn-success login-button login-button-{type}" />
+							</f:else>
+						</f:if>
+					</f:then>
+					<f:else>
+						<f:form.submit value="Mit Ihrem Mitgliedskonto auf 'meine tekom' anmelden" class="btn btn-success login-button login-button-{type}" />
+					</f:else>
+				</f:if>
+			</f:form>
 		</f:if>
 	</f:for>
 </div>
 
+<style>
+	#mytekom-login {
+		margin-bottom: 30px;
+	}
+	.loginModalContent {
+		max-width: 460px!important;
+	}
+	.loginModalContent #mytekom-login {
+		margin-bottom: 10px;
+	}
+</style>
 
-<script type="text/javascript">
-jQuery(function($) {
-	$( "#tabs" ).tabs();
-});
-</script>
 <!-- your verifyUrl is {values.verifyUrl} -->
+</html>
