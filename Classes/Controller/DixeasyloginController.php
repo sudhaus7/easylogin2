@@ -293,13 +293,14 @@ class DixeasyloginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
 	}
 
 	protected function createUser($identifier, $userinfo) {
+		$userObj = $this->objectManager->get(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser::class);
 		if ($userinfo['email']) { // doesn't come with twitter e.g.
-			$userObj = $this->userRepository->findOneByEmail($userinfo['email']);
-			if ($userObj) {
+			$tmpObj = $this->userRepository->findOneByEmail($userinfo['email']);
+			if ($tmpObj && !$this->settings['allowMigrate']) {
 				throw new \RuntimeException('email_exists');
 			}
+			$userObj = $tmpObj;
 		}
-		$userObj = $this->objectManager->get(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser::class);
 		$userObj->setEmail($userinfo['email']);
 		$userObj->setUsername($this->normalizeUserName($userinfo['nickname'] ? $userinfo['nickname'] : $userinfo['email']));
 		$userObj->setPassword(GeneralUtility::getRandomHexString(32));
