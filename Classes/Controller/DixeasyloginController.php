@@ -296,7 +296,7 @@ class DixeasyloginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
 		$userObj = $this->objectManager->get(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser::class);
 		if ($userinfo['email']) { // doesn't come with twitter e.g.
 			$tmpObj = $this->userRepository->findOneByEmail($userinfo['email']);
-			if ($tmpObj && !$this->settings['allowMigrate']) {
+			if ($tmpObj && !(bool)$this->settings['allowMigrate']) {
 				throw new \RuntimeException('email_exists');
 			}
 			$userObj = $tmpObj;
@@ -311,7 +311,10 @@ class DixeasyloginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
 		$userObj->setZip($userinfo['postcode']);
 		$userObj->setCountry($userinfo['country']);
 		$groupObj = $this->groupRepository->findByUid($this->settings['usergroup']);
-		$userObj->addUsergroup($groupObj);
+		try {
+			$userObj->addUsergroup($groupObj);
+		} catch (\Exception $e) {
+                }
 
 		if (!trim($userObj->getName())) { $userObj->setName($userinfo['nickname']); }
 		$this->userRepository->add($userObj);
