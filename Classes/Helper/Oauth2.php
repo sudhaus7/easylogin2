@@ -61,6 +61,14 @@ class Oauth2 {
 			'redirect_uri' => $verifyUrl,
 		);
 		$auth_url = $this->providerConf['authorizeUrl'] . '&' . http_build_query($params,'','&');
+		$username = '';
+		//echo '<pre>';print_r([$username,$_POST,$auth_url]);exit;
+		if (isset($_POST['tx_easylogin2_easylogin']['thedata']) && isset($_POST['tx_easylogin2_easylogin']['thedata']['userName'])) {
+		    
+            $username = trim($_POST['tx_easylogin2_easylogin']['thedata']['userName']);
+            
+        }
+        $auth_url = str_replace('###NAME###',$username,$auth_url);
 		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($auth_url);
 	}
 
